@@ -1,0 +1,47 @@
+*{
+    margin:0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+}
+
+body{
+    background-color: #3E92CC;
+    color:white;
+}
+
+header{
+    
+}
+
+h1{
+    font-size: 2rem;
+    margin:10px 0 0 10px ;
+}
+
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 5vh;    
+}
+
+.item{
+    background-color: #A2D729 ;
+    color:white;
+    display: flex;
+    height: 5rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    margin: 10px;
+    width: 10rem;
+}
+.item:hover{
+    text-decoration: underline;
+}
+
+.item a{
+    text-decoration: none;
+    color: white;
+}
+
