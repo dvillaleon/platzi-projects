@@ -1,9 +1,13 @@
+
 const celeste = document.getElementById('celeste')
 const violeta = document.getElementById('violeta')
 const naranja = document.getElementById('naranja')
 const verde = document.getElementById('verde')
 const btnEmpezar = document.getElementById('btnEmpezar')
 const CANTIDAD_NIVELES = 10
+const COLOR_DELAY = 620
+const audio = new Audio('resources/tone.mp3');
+
 
 class Juego {
     constructor() {
@@ -18,14 +22,24 @@ class Juego {
         //Se hace un bind para no perder el contexto del 
         //juego a la hora de llamar a la función elegirColor
         this.elegirColor = this.elegirColor.bind(this)
+        this.inicializar = this.inicializar.bind(this)
         this.siguienteNivel = this.siguienteNivel.bind(this)
-        btnEmpezar.classList.add('hide')
+        this.toggleBtnEmpezar()
         this.nivel = 1
         this.colores = {
             celeste,
             violeta,
             naranja,
             verde
+        }
+    }
+
+    toggleBtnEmpezar() {
+        if (btnEmpezar.classList.contains('hide')) {
+            btnEmpezar.classList.remove('hide')
+        }
+        else {
+            btnEmpezar.classList.add('hide')
         }
     }
 
@@ -69,7 +83,12 @@ class Juego {
 
     iluminarColor(color) {
         this.colores[color].classList.add('light')
-        setTimeout(() => this.apagarColor(color), 350)
+        audio.play()
+        setTimeout(() => {
+            this.apagarColor(color)
+            audio.pause()
+            audio.currentTime = 0
+        }, COLOR_DELAY)
     }
 
     apagarColor(color) {
@@ -103,19 +122,28 @@ class Juego {
                 this.nivel++
                 this.eliminarEventosClick()
                 if (this.nivel === CANTIDAD_NIVELES + 1) {
-                    //Gano
+                    this.ganoJuego()
                 }
                 else {
                     this.seleccion = 0
-                    setTimeout(this.siguienteNivel, 1000)
+                    setTimeout(this.siguienteNivel, 1500)
                 }
             }
         }
         else {
-            alert('Game Over')
-            this.inicializar()
+            this.eliminarEventosClick()
+            this.perdioJuego()
         }
+    }
 
+    ganoJuego() {
+        swal("Bien hecho!", "Ganaste el juego!", "success")
+            .then(this.inicializar)
+    }
+
+    perdioJuego() {
+        swal("Ooops!", "Perdiste!", "error")
+            .then(this.inicializar)
     }
 
     iluminarSecuencia() {
