@@ -3,18 +3,22 @@ const violeta = document.getElementById('violeta')
 const naranja = document.getElementById('naranja')
 const verde = document.getElementById('verde')
 const btnEmpezar = document.getElementById('btnEmpezar')
+const CANTIDAD_NIVELES = 10
 
 class Juego {
     constructor() {
         this.inicializar()
-        this.generarSecuencia()
-        this.siguienteNivel()
+        setTimeout(() => {
+            this.generarSecuencia()
+            this.siguienteNivel()
+        }, 1000);
     }
 
     inicializar() {
         //Se hace un bind para no perder el contexto del 
         //juego a la hora de llamar a la función elegirColor
-        this.elegirColor = this.elegirColor.bind(this) 
+        this.elegirColor = this.elegirColor.bind(this)
+        this.siguienteNivel = this.siguienteNivel.bind(this)
         btnEmpezar.classList.add('hide')
         this.nivel = 1
         this.colores = {
@@ -26,7 +30,8 @@ class Juego {
     }
 
     generarSecuencia() {
-        this.secuencia = new Array(10).fill(0).map(n =>
+        this.seleccion = 0
+        this.secuencia = new Array(CANTIDAD_NIVELES).fill(0).map(n =>
             Math.floor(Math.random() * 4))
         // this.secuencia = new Array(10).fill(0).map(n => Math.random()* 4) | 0
     }
@@ -49,6 +54,19 @@ class Juego {
         }
     }
 
+    transformarColorANumero(color) {
+        switch (color) {
+            case 'celeste':
+                return 0
+            case 'violeta':
+                return 1
+            case 'naranja':
+                return 2
+            case 'verde':
+                return 3
+        }
+    }
+
     iluminarColor(color) {
         this.colores[color].classList.add('light')
         setTimeout(() => this.apagarColor(color), 350)
@@ -58,15 +76,46 @@ class Juego {
         this.colores[color].classList.remove('light')
     }
 
-    agregarEventosClick(){
+    agregarEventosClick() {
         this.colores.celeste.addEventListener('click', this.elegirColor)
         this.colores.violeta.addEventListener('click', this.elegirColor)
         this.colores.naranja.addEventListener('click', this.elegirColor)
         this.colores.verde.addEventListener('click', this.elegirColor)
     }
 
-    elegirColor(ev){
-        console.log(ev)
+    eliminarEventosClick() {
+        this.colores.celeste.removeEventListener('click', this.elegirColor)
+        this.colores.violeta.removeEventListener('click', this.elegirColor)
+        this.colores.naranja.removeEventListener('click', this.elegirColor)
+        this.colores.verde.removeEventListener('click', this.elegirColor)
+    }
+
+    elegirColor(ev) {
+        const colorSeleccionado = ev.target.dataset.color
+        this.iluminarColor(colorSeleccionado)
+        const numeroSeleccionado =
+            this.transformarColorANumero(colorSeleccionado)
+
+
+        if (numeroSeleccionado === this.secuencia[this.seleccion]) {
+            this.seleccion++
+            if (this.nivel === this.seleccion) {
+                this.nivel++
+                this.eliminarEventosClick()
+                if (this.nivel === CANTIDAD_NIVELES + 1) {
+                    //Gano
+                }
+                else {
+                    this.seleccion = 0
+                    setTimeout(this.siguienteNivel, 1000)
+                }
+            }
+        }
+        else {
+            alert('Game Over')
+            this.inicializar()
+        }
+
     }
 
     iluminarSecuencia() {
