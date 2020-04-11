@@ -1,160 +1,170 @@
 
-const celeste = document.getElementById('celeste')
-const violeta = document.getElementById('violeta')
-const naranja = document.getElementById('naranja')
-const verde = document.getElementById('verde')
+const topLeft = document.getElementById('topLeft')
+const topRight = document.getElementById('topRight')
+const bottomLeft = document.getElementById('bottomLeft')
+const bottomRight = document.getElementById('bottomRight')
 const btnEmpezar = document.getElementById('btnEmpezar')
-const CANTIDAD_NIVELES = 10
+const LevelQty = 10
 const COLOR_DELAY = 620
-const audio = new Audio('resources/tone.mp3');
+const audio_topLeft = new Audio('resources/glassy1.mp3');
+const audio_topRight = new Audio('resources/glassy2.mp3');
+const audio_bottomLeft = new Audio('resources/glassy3.mp3');
+const audio_bottomRight = new Audio('resources/glassy4.mp3');
 
 
-class Juego {
+class Game {
     constructor() {
-        this.inicializar()
+        this.initialize()
         setTimeout(() => {
-            this.generarSecuencia()
-            this.siguienteNivel()
+            this.sequenceInit()
+            this.nextLevel()
         }, 1000);
     }
 
-    inicializar() {
+    initialize() {
         //Se hace un bind para no perder el contexto del 
         //juego a la hora de llamar a la función elegirColor
-        this.elegirColor = this.elegirColor.bind(this)
-        this.inicializar = this.inicializar.bind(this)
-        this.siguienteNivel = this.siguienteNivel.bind(this)
-        this.toggleBtnEmpezar()
-        this.nivel = 1
-        this.colores = {
-            celeste,
-            violeta,
-            naranja,
-            verde
+        this.pickButton = this.pickButton.bind(this)
+        this.initialize = this.initialize.bind(this)
+        this.nextLevel = this.nextLevel.bind(this)
+        this.toggleBtnStart()
+        this.level = 1
+        this.buttons = {
+            topLeft,
+            topRight,
+            bottomLeft,
+            bottomRight
+        }
+        this.audios = {
+            audio_topLeft, 
+            audio_topRight,
+            audio_bottomLeft,
+            audio_bottomRight
         }
     }
 
-    toggleBtnEmpezar() {
-        if (btnEmpezar.classList.contains('hide')) {
-            btnEmpezar.classList.remove('hide')
+    toggleBtnStart() {
+        if (btnStart.classList.contains('hide')) {
+            btnStart.classList.remove('hide')
         }
         else {
-            btnEmpezar.classList.add('hide')
+            btnStart.classList.add('hide')
         }
     }
 
-    generarSecuencia() {
-        this.seleccion = 0
-        this.secuencia = new Array(CANTIDAD_NIVELES).fill(0).map(n =>
+    sequenceInit() {
+        this.selection = 0
+        this.sequence = new Array(LevelQty).fill(0).map(n =>
             Math.floor(Math.random() * 4))
         // this.secuencia = new Array(10).fill(0).map(n => Math.random()* 4) | 0
     }
 
-    siguienteNivel() {
-        this.iluminarSecuencia()
-        this.agregarEventosClick()
+    nextLevel() {
+        this.turnOnSequence()
+        this.addClickEvents()
     }
 
-    transformarNumeroAColor(numero) {
-        switch (numero) {
+    
+    getButtonByNumber(number) {
+        switch (number) {
             case 0:
-                return 'celeste'
+                return 'topLeft'
             case 1:
-                return 'violeta'
+                return 'topRight'
             case 2:
-                return 'naranja'
+                return 'bottomLeft'
             case 3:
-                return 'verde'
+                return 'bottomRight'
         }
     }
 
-    transformarColorANumero(color) {
-        switch (color) {
-            case 'celeste':
+    getNumberbyButton(button) {
+        switch (button) {
+            case 'topLeft':
                 return 0
-            case 'violeta':
+            case 'topRight':
                 return 1
-            case 'naranja':
+            case 'bottomLeft':
                 return 2
-            case 'verde':
+            case 'bottomRight':
                 return 3
         }
     }
 
-    iluminarColor(color) {
-        this.colores[color].classList.add('light')
-        audio.play()
+    turnButtonOn(button) {
+        this.buttons[button].classList.add('light')
+        let audio = this.audios[`audio_${button}`]
+        audio.play();
         setTimeout(() => {
-            this.apagarColor(color)
+            this.turnButtonOff(button)
             audio.pause()
             audio.currentTime = 0
         }, COLOR_DELAY)
     }
 
-    apagarColor(color) {
-        this.colores[color].classList.remove('light')
+    turnButtonOff(button) {
+        this.buttons[button].classList.remove('light')
     }
 
-    agregarEventosClick() {
-        this.colores.celeste.addEventListener('click', this.elegirColor)
-        this.colores.violeta.addEventListener('click', this.elegirColor)
-        this.colores.naranja.addEventListener('click', this.elegirColor)
-        this.colores.verde.addEventListener('click', this.elegirColor)
+    addClickEvents() {
+        this.buttons.topLeft.addEventListener('click', this.pickButton)
+        this.buttons.topRight.addEventListener('click', this.pickButton)
+        this.buttons.bottomLeft.addEventListener('click', this.pickButton)
+        this.buttons.bottomRight.addEventListener('click', this.pickButton)
     }
 
-    eliminarEventosClick() {
-        this.colores.celeste.removeEventListener('click', this.elegirColor)
-        this.colores.violeta.removeEventListener('click', this.elegirColor)
-        this.colores.naranja.removeEventListener('click', this.elegirColor)
-        this.colores.verde.removeEventListener('click', this.elegirColor)
+    removeClickEvents() {
+        this.buttons.topLeft.removeEventListener('click', this.pickButton)
+        this.buttons.topRight.removeEventListener('click', this.pickButton)
+        this.buttons.bottomLeft.removeEventListener('click', this.pickButton)
+        this.buttons.bottomRight.removeEventListener('click', this.pickButton)
     }
 
-    elegirColor(ev) {
-        const colorSeleccionado = ev.target.dataset.color
-        this.iluminarColor(colorSeleccionado)
-        const numeroSeleccionado =
-            this.transformarColorANumero(colorSeleccionado)
+    pickButton(ev) {
+        const selectedButton = ev.target.dataset.button
+        this.turnButtonOn(selectedButton)
+        const selectedNumber =
+            this.getNumberbyButton(selectedButton)
 
-
-        if (numeroSeleccionado === this.secuencia[this.seleccion]) {
-            this.seleccion++
-            if (this.nivel === this.seleccion) {
-                this.nivel++
-                this.eliminarEventosClick()
-                if (this.nivel === CANTIDAD_NIVELES + 1) {
-                    this.ganoJuego()
+        if (selectedNumber === this.sequence[this.selection]) {
+            this.selection++
+            if (this.level === this.selection) {
+                this.level++
+                this.removeClickEvents()
+                if (this.level === LevelQty + 1) {
+                    this.winGame()
                 }
                 else {
-                    this.seleccion = 0
-                    setTimeout(this.siguienteNivel, 1500)
+                    this.selection = 0
+                    setTimeout(this.nextLevel, 1500)
                 }
             }
         }
         else {
-            this.eliminarEventosClick()
-            this.perdioJuego()
+            this.removeClickEvents ()
+            this.loseGame()
         }
     }
 
-    ganoJuego() {
-        swal("Bien hecho!", "Ganaste el juego!", "success")
-            .then(this.inicializar)
+    winGame() {
+        swal("Well done!", "You win the game!", "success")
+            .then(this.initialize)
     }
 
-    perdioJuego() {
-        swal("Ooops!", "Perdiste!", "error")
-            .then(this.inicializar)
+    loseGame() {
+        swal("Ooops!", "If you learn from a loss you have not lost.!", "error")
+            .then(this.initialize)
     }
 
-    iluminarSecuencia() {
-        for (let index = 0; index < this.nivel; index++) {
-            const color =
-                this.transformarNumeroAColor(this.secuencia[index])
-            setTimeout(() => this.iluminarColor(color), 1000 * index)
+    turnOnSequence() {
+        for (let index = 0; index < this.level; index++) {
+            const button =
+                this.getButtonByNumber(this.sequence[index])
+            setTimeout(() => this.turnButtonOn(button), 1000 * index)
         }
     }
 }
 
-function empezarJuego() {
-    var juego = new Juego()
+function startGame() {
+    var game = new Game()
 }
