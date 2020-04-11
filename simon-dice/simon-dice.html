@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/simon-dice.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu+2|Lobster|Overlock&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Simon Dice</title>
 </head>
+
 <body>
+    <header>
+        <h1>JavaScript Simon Dice</h1>
+    </header>
     <div class="gameboard">
-        <div id="celeste" class="color celeste left" data-color="celeste"></div>
-        <div id="violeta" class="color violeta right" data-color="violeta"></div>
-        <div id="naranja" class="color naranja left" data-color="naranja"></div>
-        <div id="verde" class="color verde right" data-color="verde"></div>
-        <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()"><span>Empezar a jugar!</span></button>
-      </div>
-      <script src="js/simon-dice.js"></script>
+      <div id="topLeft" class="button top-left" data-button="topLeft"></div>  
+      <div id="topRight" class="button top-right" data-button="topRight"></div>  
+      <div id="bottomLeft"class="button bottom-left" data-button="bottomLeft"></div>
+      <div id="bottomRight"class="button bottom-right" data-button="bottomRight"></div>
+    </div>
+    <button id="btnStart" class="btn-start " onclick="startGame()"><span>Start game!</span></button>
+    <script src="js/simon-dice.js"></script>
+
+    <div class="footer">
+        © Dvillaleon
+        <script>document.write(new Date().getFullYear());</script>
+    </div>
 </body>
+
 </html>
