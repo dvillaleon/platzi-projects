@@ -4,21 +4,25 @@ const topRight = document.getElementById('topRight')
 const bottomLeft = document.getElementById('bottomLeft')
 const bottomRight = document.getElementById('bottomRight')
 const btnEmpezar = document.getElementById('btnEmpezar')
-const LevelQty = 10
+const toggleAudio = document.getElementById('toggleAudio')
 const COLOR_DELAY = 620
 const audio_topLeft = new Audio('resources/glassy1.mp3');
 const audio_topRight = new Audio('resources/glassy2.mp3');
 const audio_bottomLeft = new Audio('resources/glassy3.mp3');
 const audio_bottomRight = new Audio('resources/glassy4.mp3');
-
+const lossQuotes = [
+    'Losing is part of the game. If you never lose, you are never truly tested, and never forced to grow. - David Sirlin',
+    'I would prefer even to lose with honor than to win by cheating. - Sophocles',
+    'If you learn from a loss you have not lost. - Austin O\'Malley',
+    'Sometimes you lose. Nothing you can do but admit it. - Sarah Dessen',
+    'You win some, you lose some.',
+    'You know what makes a good loser? Practice. - Ernest Hemingway'
+]
 
 class Game {
     constructor() {
         this.initialize()
-        setTimeout(() => {
-            this.sequenceInit()
-            this.nextLevel()
-        }, 1000);
+        this.sequenceInit()
     }
 
     initialize() {
@@ -36,7 +40,7 @@ class Game {
             bottomRight
         }
         this.audios = {
-            audio_topLeft, 
+            audio_topLeft,
             audio_topRight,
             audio_bottomLeft,
             audio_bottomRight
@@ -54,9 +58,24 @@ class Game {
 
     sequenceInit() {
         this.selection = 0
-        this.sequence = new Array(LevelQty).fill(0).map(n =>
-            Math.floor(Math.random() * 4))
-        // this.secuencia = new Array(10).fill(0).map(n => Math.random()* 4) | 0
+        swal("How many levels would you like to play?:", {
+            content: "input",
+            icon: "info"
+        })
+            .then((value) => {
+                let levels = parseInt(value);
+                if (!isNaN(levels)) {
+                    this.LevelQty = levels;
+                    this.sequence = new Array(this.LevelQty).fill(0).map(n => Math.floor(Math.random() * 4));
+                    setTimeout(() => {
+                        this.nextLevel();
+                    }, 1000);
+                }
+                else {
+                    swal("Ooops!", "You need to enter a number!", "info")
+                        .then(this.toggleBtnStart)
+                }
+            });
     }
 
     nextLevel() {
@@ -64,7 +83,7 @@ class Game {
         this.addClickEvents()
     }
 
-    
+
     getButtonByNumber(number) {
         switch (number) {
             case 0:
@@ -94,7 +113,9 @@ class Game {
     turnButtonOn(button) {
         this.buttons[button].classList.add('light')
         let audio = this.audios[`audio_${button}`]
-        audio.play();
+        if (toggleAudio.classList.contains('is-pressed')) {
+            audio.play();
+        }
         setTimeout(() => {
             this.turnButtonOff(button)
             audio.pause()
@@ -131,7 +152,7 @@ class Game {
             if (this.level === this.selection) {
                 this.level++
                 this.removeClickEvents()
-                if (this.level === LevelQty + 1) {
+                if (this.level === this.LevelQty + 1) {
                     this.winGame()
                 }
                 else {
@@ -141,7 +162,7 @@ class Game {
             }
         }
         else {
-            this.removeClickEvents ()
+            this.removeClickEvents()
             this.loseGame()
         }
     }
@@ -152,7 +173,7 @@ class Game {
     }
 
     loseGame() {
-        swal("Ooops!", "If you learn from a loss you have not lost.!", "error")
+        swal("Ooops!", this.getLossMessage(), "error")
             .then(this.initialize)
     }
 
@@ -162,6 +183,11 @@ class Game {
                 this.getButtonByNumber(this.sequence[index])
             setTimeout(() => this.turnButtonOn(button), 1000 * index)
         }
+    }
+
+    getLossMessage(){
+        let randomMessage = Math.floor(Math.random() * 6)
+        return lossQuotes[randomMessage]
     }
 }
 

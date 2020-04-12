@@ -9,20 +9,30 @@ body {
   flex-direction: column;
   align-items: center;
   }
+
 header{
   color: rgb(0, 0, 0);
   text-align: center;
 }
 
   .btn-start {
-    width: 200px;
-    height: 100px;
-    background: #ecf0f1;
-    color: #2c3e50;
-    font-size: 2rem;
-    margin-top: 8vh;
-    border-radius: 50%;
+    color: #494949;
+    background: #ffffff;
+    padding: 20px;
+    border: 4px solid #494949 ;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    margin-top: 2rem;
+    font-size: x-large;
   }
+
+  .btn-start:hover {
+    color: #ff6022;
+    border-radius: 50px;
+    border-color: #ff6022;
+    transition: all 0.3s ease 0s;
+    }
 
   .hide {
     display: none;
@@ -45,6 +55,7 @@ header{
     min-height: 20vh;
     min-width: 20vh;
     margin: 0.7rem;
+    cursor: pointer;
   }
   .top-left{
     background-color: #C3423F;
@@ -99,3 +110,41 @@ header{
     width: 100%;
     text-align: center;
   }
+
+  .toggle-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #toggleLabel{
+    font-size: larger;
+  }
+
+  .instructions-dialog-trigger{
+    margin-left: 5%;
+    font-size: larger;
+    cursor: help;
+  }
+  .instructions-dialog-header, 
+  .instructions-dialog-content, 
+  .instructions-dialog-footer{
+
+    padding: 0.5em 0.5em;
+  }
+
+  #upCloseButton{
+    float: right;
+  }
+
+  .swal-button {
+    padding: 7px 19px;
+    border-radius: 2px;
+    background-color: #ff6022;
+    font-size: 12px;
+    border: 1px solid #ff6022;
+  }
+
+.swal-button:not([disabled]):hover {
+  background-color: #ff6022;
+}
