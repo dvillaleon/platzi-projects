@@ -4,8 +4,12 @@ This repository contains the projects of the Platzi courses that I have taken.
 
 ## Project List
 
-Name:
-Desciption:
-Course:
-Link:
-Tech Stack:
+### Javascript Simon Says
+
+Description: A simple sequence game
+
+Course: Fundamentos de JavaScript - Platzi
+
+Link:[https://platzi.com/clases/fundamentos-javascript/]
+
+Tech Stack:Javascript - HTML - CSS
