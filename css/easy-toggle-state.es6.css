@@ -1,0 +1,179 @@
+:root {
+	--theme: #ff6022;
+}
+
+.toggle-switchbox {
+	position: relative;
+	display: inline-block;
+	width: 3em;
+	height: 1em;
+	padding: .125em;
+	overflow: hidden;
+	box-sizing: content-box;
+	border: 2px solid darkgrey;
+	outline: none;
+	border-radius: .75em;
+	background-color: white;
+	font-size: 1.25em;
+	vertical-align: middle;
+	cursor: pointer;
+	transition: .15s ease-out;
+}
+.toggle-switchbox::before {
+	position: relative;
+	z-index: 2;
+	display: block;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	background-color: #ff6022;
+	content: '';
+	transition: .15s ease-out;
+}
+.toggle-switchbox + label {
+	vertical-align: middle;
+}
+.toggle-switchbox-yes,
+.toggle-switchbox-no {
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+	transform: translateY(-50%);
+	font-size: .75em;
+	text-transform: uppercase;
+	pointer-events: none;
+	transition: inherit;
+}
+.toggle-switchbox-yes {
+	left: .75em;
+	color: white;
+	font-weight: bold;
+	opacity: 0;
+}
+.toggle-switchbox-no {
+	right: .75em;
+	color: darkgrey;
+	opacity: 1;
+}
+.toggle-switchbox:hover,
+.toggle-switchbox:focus {
+	border-color: var(--theme); 
+	box-shadow: 0 0 .10em var(--theme); 
+}
+.toggle-switchbox:hover::before,
+.toggle-switchbox:focus::before {
+	background-color: var(--theme); 
+}
+
+.toggle-switchbox.is-pressed {
+	border-color: var(--theme); 
+	background-color: var(--theme); 
+}
+.toggle-switchbox.is-pressed .toggle-switchbox-yes {
+	opacity: 1;
+}
+.toggle-switchbox.is-pressed .toggle-switchbox-no {
+	opacity: 0;
+}
+.toggle-switchbox.is-pressed::before {
+	transform: translateX(2em);
+	background-color: white;
+}
+.toggle-switchbox.is-pressed:hover,
+.toggle-switchbox.is-pressed:focus {
+	border-color: rgba(0,0,0,.35);
+}
+.toggle-switchbox.is-pressed:hover::before,
+.toggle-switchbox.is-pressed:focus::before {
+	background-color: white;
+}
+
+/* Only for screen readers */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+	white-space: nowrap;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+}
+
+
+.instructions-dialog-trigger {
+	display: inline-block;
+	padding: 0;
+	overflow: hidden;
+	border: none;
+	background: none;
+	color: var(--theme); /* You probably need to change this! */
+	text-decoration: underline;
+}
+.instructions-dialog-trigger:hover,
+.instructions-dialog-trigger:focus {
+	text-decoration: none;
+}
+.instructions-dialog {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 10;
+	display: flex;
+	padding: 1em;
+	background-color: rgba(0,0,0,.75);
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+	transition: .25s ease-out;
+}
+.instructions-dialog.is-active {
+	visibility: visible;
+	opacity: 1;
+	pointer-events: auto;
+}
+.instructions-dialog-container {
+	width: 100%;
+	max-width: 30em;
+	margin: auto;
+	transform: translateY(-1em) scale(.95);
+	background-color: white;
+	transition: transform .25s ease-out;
+}
+.instructions-dialog.is-active .instructions-dialog-container {
+	transform: translateY(0) scale(1);
+}
+.instructions-dialog-header,
+.instructions-dialog-content,
+.instructions-dialog-footer {
+	padding: .5em 1em;
+}
+.instructions-dialog-header {
+	background-color: var(--theme);
+	color: white;
+	font-weight: bold;
+}
+.instructions-dialog-header h5 {
+	margin: 0;
+	font: inherit;
+}
+.instructions-dialog-footer {
+	background-color: whitesmoke;
+	text-align: right;
+}
+.instructions-dialog-footer button {
+	display: inline-block;
+	padding: .25em .5em;
+	border: none;
+	background-color: var(--theme);
+	color: white;
+}
+.instructions-dialog-footer button:hover,
+.instructions-dialog-footer button:focus {
+	background-color: white ;
+	color: var(--theme);
+}

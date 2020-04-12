@@ -4,25 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/simon-dice.css">
     <link href="https://fonts.googleapis.com/css?family=Baloo+Tammudu+2|Lobster|Overlock&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/easy-toggle-state.es6.css">
+    <link rel="stylesheet" type="text/css" href="css/simon-dice.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://rawgit.com/Twikito/easy-toggle-state/master/dist/easy-toggle-state.es6.min.js"></script>
+    
     <title>Simon Dice</title>
 </head>
 
 <body>
     <header>
-        <h1>JavaScript Simon Dice</h1>
+        <h1>JavaScript Simon Says</h1>
+        <div class="toggle-container">
+            <label id="toggleLabel" for="toggleAudio">Sound? &ThickSpace;</label>
+            <button type="button" class="toggle-switchbox" data-toggle-class="is-pressed" id="toggleAudio"
+                aria-pressed="false" title="Toggle this box">
+                <span class="toggle-switchbox-yes" aria-hidden="true">yes</span>
+                <span class="toggle-switchbox-no" aria-hidden="true">no</span>
+                <span class="sr-only">Toggle</span>
+            </button>
+
+            <button type="button" class="instructions-dialog-trigger" data-toggle-class=""
+                data-toggle-target="#dialog_instructions" data-toggle-target-only="" data-toggle-escape=""
+                data-toggle-modal="">
+                See instructions
+            </button>
+            <div class="instructions-dialog" id="dialog_instructions">
+                <section class="instructions-dialog-container">
+                    <header class="instructions-dialog-header">
+                        <h5>Instructions <button id="upCloseButton" type="button" data-toggle-trigger-off="">close</button></h5>
+                    </header>
+                    <div class="instructions-dialog-content">
+                        <h3>Game Goal</h3>
+                        <p>Repeat the same exact sequence from Simon.</p>
+                        <h4>1-player Game</h4>
+                        <p>Press the "Start game!" button. Simon will give the first signal. Repeat the signal by
+                            pressing the same color lens.</p>
+                        <p>Simon will duplicate the first signal and add one. Repeat these two signals by pressing the
+                            same color lenses, in order.</p>
+                        <p>Continue playing as long as you can repeat each sequence of signals correctly.
+                            <p>The game ends if you fail to repeat the same exact sequence, which means you have lost,
+                                or if you complete the entire sequence without a miss, in that case, you win the game
+                            </p>
+                            <h4>2 or More Player Game</h4>
+                            <p>Players may team up against Simon or compete with each other.</p>
+                            <p>Decide who goes first. Proceed to play as described above except players take turns
+                                repeating Simon's signals.
+                    </div>
+                    <footer class="instructions-dialog-footer">
+                        <button type="button" data-toggle-trigger-off="">close</button>
+                    </footer>
+                </section>
+            </div>
+
+        </div>
     </header>
     <div class="gameboard">
-      <div id="topLeft" class="button top-left" data-button="topLeft"></div>  
-      <div id="topRight" class="button top-right" data-button="topRight"></div>  
-      <div id="bottomLeft"class="button bottom-left" data-button="bottomLeft"></div>
-      <div id="bottomRight"class="button bottom-right" data-button="bottomRight"></div>
+        <div id="topLeft" class="button top-left" data-button="topLeft"></div>
+        <div id="topRight" class="button top-right" data-button="topRight"></div>
+        <div id="bottomLeft" class="button bottom-left" data-button="bottomLeft"></div>
+        <div id="bottomRight" class="button bottom-right" data-button="bottomRight"></div>
     </div>
     <button id="btnStart" class="btn-start " onclick="startGame()"><span>Start game!</span></button>
     <script src="js/simon-dice.js"></script>
-
     <div class="footer">
         © Dvillaleon
         <script>document.write(new Date().getFullYear());</script>
