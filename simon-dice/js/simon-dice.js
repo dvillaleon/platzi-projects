@@ -10,7 +10,7 @@ const audio_topLeft = new Audio('resources/glassy1.mp3');
 const audio_topRight = new Audio('resources/glassy2.mp3');
 const audio_bottomLeft = new Audio('resources/glassy3.mp3');
 const audio_bottomRight = new Audio('resources/glassy4.mp3');
-const losingQuotes = [
+const lossQuotes = [
     'Losing is part of the game. If you never lose, you are never truly tested, and never forced to grow. - David Sirlin',
     'I would prefer even to lose with honor than to win by cheating. - Sophocles',
     'If you learn from a loss you have not lost. - Austin O\'Malley',
@@ -60,7 +60,7 @@ class Game {
         this.selection = 0
         swal("How many levels would you like to play?:", {
             content: "input",
-            type: "number"
+            icon: "info"
         })
             .then((value) => {
                 let levels = parseInt(value);
@@ -173,7 +173,7 @@ class Game {
     }
 
     loseGame() {
-        swal("Ooops!", "If you learn from a loss you have not lost.!", "error")
+        swal("Ooops!", this.getLossMessage(), "error")
             .then(this.initialize)
     }
 
@@ -183,6 +183,11 @@ class Game {
                 this.getButtonByNumber(this.sequence[index])
             setTimeout(() => this.turnButtonOn(button), 1000 * index)
         }
+    }
+
+    getLossMessage(){
+        let randomMessage = Math.floor(Math.random() * 6)
+        return lossQuotes[randomMessage]
     }
 }
 
